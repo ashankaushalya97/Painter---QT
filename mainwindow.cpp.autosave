@@ -86,7 +86,7 @@ void MainWindow::createActions(){
 
     penColorAct = new QAction(tr("&Pen Color..."),this);
     connect(penColorAct,SIGNAL(triggered()),scribbleArea,SLOT(penColor()));
-
+    penWidth
 
 }
 
