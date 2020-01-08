@@ -4,10 +4,6 @@
 #include <QList>
 #include <QMainWindow>
 
-//QT_BEGIN_NAMESPACE
-//namespace Ui { class MainWindow; }
-//QT_END_NAMESPACE
-
 class ScribbleArea;
 
 class MainWindow : public QMainWindow
@@ -16,9 +12,6 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow();
-//    MainWindow(QWidget *parent = nullptr);
-//    ~MainWindow();
-
 
 protected:
         void closeEvent(QCloseEvent *event) override;
@@ -31,7 +24,6 @@ private slots:
         void about();
 
 private:
-//    Ui::MainWindow *ui;
     void createActions();
     void createMenus();
     bool maybeSave();

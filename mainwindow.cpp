@@ -3,20 +3,13 @@
 #include "ui_mainwindow.h"
 #include "scribblearea.h"
 
-//MainWindow::MainWindow(QWidget *parent)
-//    : QMainWindow(parent)
-//    , ui(new Ui::MainWindow)
-//{
-//    ui->setupUi(this);
-//}
-
 MainWindow::MainWindow()
 {
     scribbleArea = new ScribbleArea;
     setCentralWidget(scribbleArea);
     createActions();
     createMenus();
-    setWindowTitle(tr("Scribble"));
+    setWindowTitle(tr("The Painter"));
     resize(500,500);
 }
 
@@ -51,7 +44,7 @@ void MainWindow:: penColor(){
 
 void MainWindow:: penWidth(){
     bool ok;
-    int newWidth = QInputDialog::getInt(this,tr("Scribble"),
+    int newWidth = QInputDialog::getInt(this,tr("The Painter"),
                                      tr("Select pen width : "),
                                         scribbleArea->penWidth(),
                                         1,50,1, &ok);
@@ -62,8 +55,8 @@ void MainWindow:: penWidth(){
 }
 
 void MainWindow::about(){
-    QMessageBox::about(this, tr("About Scribble"),
-                       tr("<p>The <b>Scribble</b> example is awesome</b>"));
+    QMessageBox::about(this, tr("About Painter"),
+                       tr("<p>The <b>Painter</b> is a simple painting application for drawings.</p>"));
     
 }
 
@@ -78,26 +71,26 @@ void MainWindow::createActions(){
         connect(action,SIGNAL(triggered()),this,SLOT(save()));
         saveAsActs.append(action);
     }
-    printAct = new QAction(tr("&Print..."),this);
-    connect(printAct,SIGNAL(triggered()),scribbleArea,SLOT(print()));
-    exitAct = new QAction(tr("E&xit"),this);
-    exitAct->setShortcuts(QKeySequence::Quit);
-    connect(exitAct,SIGNAL(triggered()),this,SLOT(close()));
+       printAct = new QAction(tr("&Print..."), this);
+       connect(printAct, SIGNAL(triggered()), scribbleArea, SLOT(print()));
 
-    penColorAct = new QAction(tr("&Pen Color..."),this);
-    connect(penColorAct,SIGNAL(triggered()),scribbleArea,SLOT(penColor()));
-    penWidthAct = new QAction(tr("Pen &Width..."),this);
-    connect(penWidthAct,SIGNAL(triggered()),scribbleArea,SLOT(penWidth()));
+       exitAct = new QAction(tr("E&xit"), this);
+       exitAct->setShortcuts(QKeySequence::Quit);
+       connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
 
-    clearScreenAct = new QAction(tr("&Clear Screen..."),this);
-    clearScreenAct->setShortcut(tr("Ctrl+L"));
-    connect(clearScreenAct,SIGNAL(triggered()),scribbleArea,SLOT(clearImage()));
+       penColorAct = new QAction(tr("&Pen Color..."), this);
+       connect(penColorAct, SIGNAL(triggered()), this, SLOT(penColor()));
 
-    aboutAct = new QAction(tr("&About..."),this);
-    connect(aboutAct,SIGNAL(triggered()),scribbleArea,SLOT(about()));
+       penWidthAct = new QAction(tr("Pen &Width..."), this);
+       connect(penWidthAct, SIGNAL(triggered()), this, SLOT(penWidth()));
 
-    aboutQtAct = new QAction(tr("About &Qt..."),this);
-    connect(aboutQtAct,SIGNAL(triggered()),qApp,SLOT(aboutQt()));
+       clearScreenAct = new QAction(tr("&Clear Screen"), this);
+       clearScreenAct->setShortcut(tr("Ctrl+L"));
+       connect(clearScreenAct, SIGNAL(triggered()),
+               scribbleArea, SLOT(clearImage()));
+
+       aboutAct = new QAction(tr("&About"), this);
+       connect(aboutAct, SIGNAL(triggered()), this, SLOT(about()));
 
 
 }
@@ -120,7 +113,6 @@ void MainWindow::createMenus(){
 
     helpMenu = new QMenu(tr("&Help"),this);
     helpMenu->addAction(aboutAct);
-    helpMenu->addAction(aboutQtAct);
 
     menuBar()->addMenu(fileMenu);
     menuBar()->addMenu(optionMenu);
@@ -131,7 +123,7 @@ void MainWindow::createMenus(){
 bool MainWindow::maybeSave(){
     if(scribbleArea->isModified()){
         QMessageBox::StandardButton ret;
-        ret = QMessageBox::warning(this,tr("Scribble"),
+        ret = QMessageBox::warning(this,tr("The Painter"),
                                    tr("The image has been modified.\n"
                                       "Do you want to save your changes?"),
                                    QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
