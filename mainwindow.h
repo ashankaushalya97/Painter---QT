@@ -19,7 +19,7 @@ public:
     ~MainWindow();
 
 protected:
-        void closEvent(QCloseEvent *event) override;
+        void closEvent(QCloseEvent *event);
 
 private slots:
         void opem();
