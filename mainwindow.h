@@ -1,4 +1,4 @@
-//#ifndef MAINWINDOW_H
+#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QList>
@@ -8,21 +8,23 @@
 //namespace Ui { class MainWindow; }
 //QT_END_NAMESPACE
 
-class scribbleArea;
+class ScribbleArea;
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    MainWindow();
+//    MainWindow(QWidget *parent = nullptr);
+//    ~MainWindow();
+
 
 protected:
-        void closEvent(QCloseEvent *event);
+        void closeEvent(QCloseEvent *event) override;
 
 private slots:
-        void opem();
+        void open();
         void save();
         void penColor();
         void penWidth();
@@ -34,13 +36,17 @@ private:
     void createMenus();
     bool maybeSave();
     bool saveFile(const QByteArray &fileFormate);
-    scribblearea *scribbleArea;
+    ScribbleArea *scribbleArea;
+
     QMenu *saveAsMenu;
     QMenu *fileMenu;
     QMenu *optionMenu;
     QMenu *helpMenu;
+
     QAction *openAct;
+
     QList<QAction *> saveAsActs;
+    QAction *exitAct;
     QAction *penColorAct;
     QAction *penWidthAct;
     QAction *printAct;
@@ -51,4 +57,4 @@ private:
 
 
 };
-//#endif // MAINWINDOW_H
+#endif // MAINWINDOW_H

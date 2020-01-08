@@ -10,7 +10,7 @@
 //    ui->setupUi(this);
 //}
 
-MainWindow::~MainWindow()
+MainWindow::MainWindow()
 {
     scribbleArea = new ScribbleArea;
     setCentralWidget(scribbleArea);
@@ -39,11 +39,11 @@ void MainWindow::open(){
 
 void MainWindow::save(){
     QAction *action = qobject_cast<QAction *>(sender());
-    QByte fileFormat = action->data().toByteArray();
+    QByteArray fileFormat = action->data().toByteArray();
     saveFile(fileFormat);
 }
 void MainWindow:: penColor(){
-    QColor newColor = QColorDialog::getColor(scribblearea->penColor());
+    QColor newColor = QColorDialog::getColor(scribbleArea->penColor());
     if(newColor.isValid()){
         scribbleArea->setPenColor(newColor);
     }
@@ -53,11 +53,11 @@ void MainWindow:: penWidth(){
     bool ok;
     int newWidth = QInputDialog::getInt(this,tr("Scribble"),
                                      tr("Select pen width : "),
-                                        ScribbleArea->penWidth(),
+                                        scribbleArea->penWidth(),
                                         1,50,1, &ok);
     
     if(ok){
-        ScribbleArea->setPenWidth(newWidth);
+        scribbleArea->setPenWidth(newWidth);
     } 
 }
 
@@ -75,19 +75,19 @@ void MainWindow::createActions(){
         QString text = tr("%1...").arg(QString(format).toUpper());
         QAction *action = new QAction(text,this);
         action->setData(format);
-        connet(action,SIGNAL(triggered()),this,SLOT(save()));
+        connect(action,SIGNAL(triggered()),this,SLOT(save()));
         saveAsActs.append(action);
     }
     printAct = new QAction(tr("&Print..."),this);
     connect(printAct,SIGNAL(triggered()),scribbleArea,SLOT(print()));
-    exitAct = new QActions(tr("E&xit"),this);
+    exitAct = new QAction(tr("E&xit"),this);
     exitAct->setShortcuts(QKeySequence::Quit);
     connect(exitAct,SIGNAL(triggered()),this,SLOT(close()));
 
     penColorAct = new QAction(tr("&Pen Color..."),this);
     connect(penColorAct,SIGNAL(triggered()),scribbleArea,SLOT(penColor()));
     penWidthAct = new QAction(tr("Pen &Width..."),this);
-    connect(penColorAct,SIGNAL(triggered()),scribbleArea,SLOT(penWidth()));
+    connect(penWidthAct,SIGNAL(triggered()),scribbleArea,SLOT(penWidth()));
 
     clearScreenAct = new QAction(tr("&Clear Screen..."),this);
     clearScreenAct->setShortcut(tr("Ctrl+L"));
@@ -104,18 +104,18 @@ void MainWindow::createActions(){
 
 void MainWindow::createMenus(){
     saveAsMenu = new QMenu(tr("&Save As"),this);
-    foreach(QAction *actions,saveAsActs)
+    foreach(QAction *action,saveAsActs)
         saveAsMenu->addAction(action);
     fileMenu = new QMenu(tr("&File"),this);
     fileMenu->addAction(openAct);
-    fileMenu->addAction(saveAsMenu);
+    fileMenu->addMenu(saveAsMenu);
     fileMenu->addAction(printAct);
     fileMenu->addSeparator();
     fileMenu->addAction(exitAct);
     optionMenu = new QMenu(tr("&Options"),this);
     optionMenu->addAction(penColorAct);
     optionMenu->addAction(penWidthAct);
-    fileMenu->addSeparator();
+    optionMenu->addSeparator();
     optionMenu->addAction(clearScreenAct);
 
     helpMenu = new QMenu(tr("&Help"),this);
@@ -135,7 +135,7 @@ bool MainWindow::maybeSave(){
                                    tr("The image has been modified.\n"
                                       "Do you want to save your changes?"),
                                    QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-        if(ret== QMessage::Save){
+        if(ret== QMessageBox::Save){
             return saveFile("png");
         }else if(ret==QMessageBox::Cancel){
             return false;

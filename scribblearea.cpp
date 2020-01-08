@@ -1,3 +1,4 @@
+
 #include <QtWidgets>
 #if defined(QT_PRINTSUPPORT_LIB)
 #include <QtPrintSupport/qtprintsupportglobal.h>
@@ -7,22 +8,28 @@
 #endif
 #endif
 
+#include "scribblearea.h"
 
-scribblearea::scribblearea(QWidget *parent): QWidget(parent)
+ScribbleArea::ScribbleArea(QWidget *parent)
+    : QWidget(parent)
 {
+    // Roots the widget to the top left even if resized
     setAttribute(Qt::WA_StaticContents);
+
+    // Set defaults for the monitored variables
     modified = false;
     scribbling = false;
     myPenWidth = 1;
     myPenColor = Qt::blue;
 }
 
+
 bool ScribbleArea::openImage(const QString &fileName){
     QImage loadedImage;
     if(!loadedImage.load(fileName)){
         return false;
     }
-    QSize newSize = loadImage.size().expandedTo(size());
+    QSize newSize = loadedImage.size().expandedTo(size());
     resizeImage(&loadedImage, newSize);
     image=loadedImage;
     modified = false;
@@ -31,7 +38,9 @@ bool ScribbleArea::openImage(const QString &fileName){
 }
 bool ScribbleArea::saveImage(const QString &fileName, const char *fileFormat){
     QImage visibleImage = image;
-    resize(&visibleImage, size()){
+    resizeImage(&visibleImage, size());
+
+    if(visibleImage.save(fileName, fileFormat)){
         modified = false;
         return true;
     }else {
@@ -41,7 +50,7 @@ bool ScribbleArea::saveImage(const QString &fileName, const char *fileFormat){
 void ScribbleArea:: setPenColor(const QColor &newColor){
     myPenColor = newColor;
 }
-void Scribble::setPenWidth(int newWidth){
+void ScribbleArea::setPenWidth(int newWidth){
     myPenWidth = newWidth;
 }
 void ScribbleArea::clearImage(){
@@ -50,7 +59,7 @@ void ScribbleArea::clearImage(){
     update();
 }
 void ScribbleArea::mousePressEvent(QMouseEvent *event){
-    if(event->button()==Qt::leftButton){
+    if(event->button()==Qt::LeftButton){
         lastPoint = event->pos();
         scribbling = true;
     }
