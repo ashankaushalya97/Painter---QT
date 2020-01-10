@@ -12,7 +12,6 @@ int main(int argc, char *argv[])
 
     QSplashScreen *splash = new QSplashScreen;
     splash->setPixmap(QPixmap(":/img/splash.png"));
-//    splash->setPixmap(QPixmap(":/home/ash/QT/test1/PaintV1/fire.png"));
     splash->show();
 
     MainWindow w;
@@ -31,6 +30,5 @@ int main(int argc, char *argv[])
     );
 
 
-//    w.show();
     return a.exec();
 }
